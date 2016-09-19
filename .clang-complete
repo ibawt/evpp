@@ -1,0 +1,6 @@
+-DGLEW_STATIC
+-I/Users/ian/devel/ev/src
+-I/usr/local/include/SDL2
+-I/Users/ian/devel/ev++/vendor/json
+-I/Users/ian/devel/ev++/src
+-std=c++11

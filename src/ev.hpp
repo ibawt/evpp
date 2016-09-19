@@ -7,7 +7,13 @@
 #include <SDL2/SDL_image.h>
 
 namespace ev {
-  class Object
-  {
-  };
+class Object
+{
+};
+
+enum Result {
+  EV_FAIL = 1,
+  EV_OK = 0
+};
+
 }

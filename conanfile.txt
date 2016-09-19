@@ -1,6 +1,5 @@
 [requires]
 glew/1.13.0@coding3d/stable
-nlJson/2.0.2@arnemertz/stable
 
 [generators]
 cmake

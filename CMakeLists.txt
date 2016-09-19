@@ -17,5 +17,7 @@ include_directories(
   )
 add_subdirectory( vendor/Box2D )
 add_definitions(-DGLEW_STATIC)
-add_executable(main src/main.cpp)
-target_link_libraries(main ${SDL2_LIBRARY} ${CONAN_LIBS} Box2D ${OPENGL_LIBRARY})
+add_executable(main src/main.cpp
+  src/application.cpp
+  )
+target_link_libraries(main ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} ${CONAN_LIBS} Box2D ${OPENGL_LIBRARY})

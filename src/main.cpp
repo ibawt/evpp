@@ -1,11 +1,23 @@
-#define NO_SDL_GLEXT
-#include "SDL.h"
+#include "ev.hpp"
+#include "application.hpp"
+
+class TestBed : public ev::Application
+{
+ public:
+  TestBed() : ev::Application(800,600, "ev") {}
+  virtual void Render() {
+  }
+
+  virtual void Update(const float dt) {
+  }
+};
 
 int main(int argc, char **argv)
 {
-  auto window = SDL_CreateWindow("ev++", SDL_WINDOWPOS_UNDEFINED,
-                                 SDL_WINDOWPOS_UNDEFINED,
-                                 800, 600,
-                                 SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+
+  TestBed t;
+
+  t.Show();
+
   return 0;
 }
