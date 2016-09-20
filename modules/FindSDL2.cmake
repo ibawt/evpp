@@ -92,7 +92,7 @@ FIND_LIBRARY(SDL2_LIBRARY_TEMP
   NAMES SDL2
   HINTS
   $ENV{SDL2DIR}
-  c:/lib/sdl2/lib/x64
+  c:/lib/sdl2/lib/x86
   PATH_SUFFIXES lib64 lib
   PATHS
   /sw
