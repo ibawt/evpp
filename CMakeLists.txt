@@ -1,6 +1,7 @@
 project(ev++)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules/")
+include(cotire)
 find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -17,22 +18,22 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm
   )
 IF(MSVC)
-  	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 ENDIF(MSVC)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNOMINMAX -D_USE_MATH_DEFINES")
 
 IF(WIN32)
-	find_library(VULKAN_LIB NAMES vulkan-1 vulkan PATHS $ENV{VULKAN_SDK}/Source/lib32)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WIN32_KHR")
+  find_library(VULKAN_LIB NAMES vulkan-1 vulkan PATHS $ENV{VULKAN_SDK}/Source/lib32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WIN32_KHR")
 ELSE(WIN32)
-	find_library(VULKAN_LIB NAMES libvulkan.so PATHS ${CMAKE_SOURCE_DIR}/libs/vulkan)
-	find_package(ASSIMP REQUIRED)
-	find_package(XCB REQUIRED)
-	find_package(Threads REQUIRED)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_XCB_KHR")
-	# Todo : android?
+  find_library(VULKAN_LIB NAMES libvulkan.so PATHS ${CMAKE_SOURCE_DIR}/libs/vulkan)
+  find_package(ASSIMP REQUIRED)
+  find_package(XCB REQUIRED)
+  find_package(Threads REQUIRED)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_XCB_KHR")
+  # Todo : android?
 ENDIF(WIN32)
 
 
@@ -46,3 +47,4 @@ add_executable(main src/main.cpp
   vendor/glew/src/glew.c
   )
 target_link_libraries(main ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} ${CONAN_LIBS} Box2D ${OPENGL_LIBRARY} ${VULKAN_LIB})
+cotire(main)
