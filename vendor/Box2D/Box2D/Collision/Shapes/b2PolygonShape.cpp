@@ -279,13 +279,13 @@ void b2PolygonShape::ComputeDistance(const b2Transform& xf, const b2Vec2& p, flo
 	{
 		b2Vec2 minDistance = normalForMaxDistance;
 		float32 minDistance2 = maxDistance * maxDistance;
-		for (int32 i = 0; i < m_count; ++i)
+		for (int32 j = 0; j < m_count; ++j)
 		{
-			b2Vec2 distance = pLocal - m_vertices[i];
-			float32 distance2 = distance.LengthSquared();
+			b2Vec2 distance1 = pLocal - m_vertices[j];
+			float32 distance2 = distance1.LengthSquared();
 			if (minDistance2 > distance2)
 			{
-				minDistance = distance;
+				minDistance = distance1;
 				minDistance2 = distance2;
 			}
 		}

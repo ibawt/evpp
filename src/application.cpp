@@ -45,7 +45,7 @@ Result Application::Close()
     window = nullptr;
   }
 
-  return EV_OK;
+  return Result::Ok;
 }
 
 Result Application::Show()
@@ -54,27 +54,28 @@ Result Application::Show()
                             SDL_WINDOWPOS_UNDEFINED,
                             width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   if(!window) {
-    return EV_FAIL;
+    return Result::Ok;
   }
 
   context = SDL_GL_CreateContext(window);
   if(!context) {
-    return EV_FAIL;
+    return Result::Error;
   }
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glViewport(0, 0, width, height);
 
   SDL_GL_SetSwapInterval(1);
 
-  return EV_OK;
+  return Result::Ok;
 }
 
 Result Application::Run()
 {
-  auto t1 = SDL_GetPerformanceCounter();
 
   while(!shouldClose) {
-    SDL_Event e;
+	const auto t1 = SDL_GetPerformanceCounter();
+
+	SDL_Event e;
 
     while( SDL_PollEvent(&e)) {
       switch(e.type) {
@@ -85,20 +86,20 @@ Result Application::Run()
           printf("keyup\n");
           break;
         case SDL_QUIT:
-          return EV_OK;
+          return Result::Ok;
       }
 
-      auto t2 = SDL_GetPerformanceCounter() - t1;
+      const auto t2 = SDL_GetPerformanceCounter() - t1;
 
-      auto dt = ((t2 - t2) * 1000) / SDL_GetPerformanceFrequency();
+      const auto dt = ((t2 - t2) * 1000.0) / SDL_GetPerformanceFrequency();
 
-      Update(dt);
+      Update(static_cast<float>(dt));
       Render();
 
       SDL_GL_SwapWindow(window);
     }
   }
-  return EV_OK;
+  return Result::Ok;
 }
 
 }
