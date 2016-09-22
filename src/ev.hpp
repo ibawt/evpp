@@ -1,8 +1,7 @@
 #pragma once
 
 #define NO_SDL_GLEXT
-#include <GL/glew.h>
-#ifdef WIN32
+#ifdef _WIN32
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
@@ -26,7 +25,11 @@ struct Vec2 {
 
 struct BatchVertex
 {
-  float x,y,u,v,rotation,scale,tx,y,opacity;
+  float x,y,u,v,rotation,scale,tx,ty,opacity;
+
+  BatchVertex() : x(0.0f), y(0.0f), u(0.0f), v(0.0f),
+	              rotation(0.0f), scale(0.0f), tx(0.0f),
+	              ty(0.0f), opacity(0.0f) {}
 };
 
 struct Size {
@@ -43,11 +46,12 @@ struct Rectangle {
   Rectangle(float x, float y, float w, float h) :
       origin(x, y), size(w, h) {}
   Rectangle(Vec2 origin, Size size) : origin(origin), size(size) {}
+  Rectangle() {}
 
-  float left() const;
-  float right() const;
-  float top() const;
-  float bottom() const;
+  float left() const { return origin.x; }
+  float right() const { return origin.x + size.width; }
+  float top() const { return origin.y;  }
+  float bottom() const { return origin.y + size.height; }
 };
 
 enum class Result {

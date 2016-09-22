@@ -5,10 +5,10 @@ class TestBed : public ev::Application
 {
  public:
   TestBed() : ev::Application(800,600, "ev") {}
-  virtual void Render() {
+  virtual void render() {
   }
 
-  virtual void Update(const float dt) {
+  virtual void update(const float dt) {
   }
 };
 
@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 
   TestBed t;
 
-  t.Show();
+  t.show();
 
   return 0;
 }

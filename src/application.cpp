@@ -1,5 +1,4 @@
 #include "application.hpp"
-
 #include <vector>
 #include <iostream>
 
@@ -43,11 +42,11 @@ Application::Application(int32_t width, int32_t height, std::string name) : widt
 
 Application::~Application()
 {
-	Close();
+	close();
 	SDL_Quit();
 }
 
-Result Application::Close()
+Result Application::close()
 {
 	shouldClose = true;
 	if (window) {
@@ -65,7 +64,7 @@ Result Application::Close()
 	return Result::Ok;
 }
 
-Result Application::Show()
+Result Application::show()
 {
 	window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
@@ -79,7 +78,7 @@ Result Application::Show()
 	return Result::Ok;
 }
 
-Result Application::Run()
+Result Application::run()
 {
 	while (!shouldClose) {
 		const auto t1 = SDL_GetPerformanceCounter();
@@ -103,8 +102,8 @@ Result Application::Run()
 
 			const auto dt = ((t2 - t2) * 1000.0) / SDL_GetPerformanceFrequency();
 
-			Update(static_cast<float>(dt));
-			Render();
+			update(static_cast<float>(dt));
+			render();
 		}
 	}
 	

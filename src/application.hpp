@@ -13,12 +13,12 @@ public:
 	Application(int32_t width, int32_t height, std::string name);
 	~Application();
 
-	Result Show();
-	Result Close();
-	Result Run();
+	Result show();
+	Result close();
+	Result run();
 
-	virtual void Render() = 0;
-	virtual void Update(const float dt) = 0;
+	virtual void render() = 0;
+	virtual void update(const float dt) = 0;
 private:
 	vk::Instance vkInstance;
 	vk::SurfaceKHR vkSurface;

@@ -1,7 +1,6 @@
 project(ev++)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules/")
-include(cotire)
 find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -43,8 +42,10 @@ add_definitions(-DGLEW_STATIC)
 add_executable(main src/main.cpp
   src/application.cpp
   src/application.hpp
+  src/sprite_sheet.hpp
+  src/sprite_sheet.cpp
+  src/ev.hpp
   vendor/glm/glm.hpp
   vendor/glew/src/glew.c
   )
 target_link_libraries(main ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} ${CONAN_LIBS} Box2D ${OPENGL_LIBRARY} ${VULKAN_LIB})
-cotire(main)
