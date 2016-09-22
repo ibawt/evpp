@@ -16,20 +16,14 @@ class Object
 {
 };
 
-struct Vec2 {
-  float x;
-  float y;
-  Vec2(float x, float y) : x(x), y(y) {}
-  Vec2() : x(0.0f), y(0.0f) {}
-};
 
 struct BatchVertex
 {
   float x,y,u,v,rotation,scale,tx,ty,opacity;
 
   BatchVertex() : x(0.0f), y(0.0f), u(0.0f), v(0.0f),
-	              rotation(0.0f), scale(0.0f), tx(0.0f),
-	              ty(0.0f), opacity(0.0f) {}
+                rotation(0.0f), scale(0.0f), tx(0.0f),
+                ty(0.0f), opacity(0.0f) {}
 };
 
 struct Size {
@@ -39,6 +33,13 @@ struct Size {
   Size() : width(0.0f), height(0.0f) {}
 };
 
+struct Vec2 {
+  float x;
+  float y;
+  Vec2(float x, float y) : x(x), y(y) {}
+  Vec2() : x(0.0f), y(0.0f) {}
+  explicit Vec2(const Size& s) : x(s.width), y(s.height) {}
+};
 struct Rectangle {
   Vec2 origin;
   Size size;

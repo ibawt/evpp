@@ -1,8 +1,10 @@
 #pragma once
 #include "ev.hpp"
-#include "glm.hpp"
-#include "SDL_syswm.h"
-#include "vulkan\vulkan.hpp"
+
+#ifndef NO_VULKAN
+#include "vulkan/vulkan.hpp"
+#endif
+
 #include <string>
 
 namespace ev {
@@ -10,24 +12,26 @@ namespace ev {
 class Application : public Object
 {
 public:
-	Application(int32_t width, int32_t height, std::string name);
-	~Application();
+  Application(int32_t width, int32_t height, std::string name);
+  ~Application();
 
-	Result show();
-	Result close();
-	Result run();
+  Result show();
+  Result close();
+  Result run();
 
-	virtual void render() = 0;
-	virtual void update(const float dt) = 0;
+  virtual void render() = 0;
+  virtual void update(const float dt) = 0;
 private:
-	vk::Instance vkInstance;
-	vk::SurfaceKHR vkSurface;
-	int32_t width;
-	int32_t height;
-	std::string name;
-	bool           shouldClose;
-	SDL_GLContext  context;
-	SDL_Window    *window;
+  #ifndef NO_VULKAN
+  vk::Instance vkInstance;
+  vk::SurfaceKHR vkSurface;
+  #endif
+  int32_t width;
+  int32_t height;
+  std::string name;
+  bool           shouldClose;
+  SDL_GLContext  context;
+  SDL_Window    *window;
 };
 
 }

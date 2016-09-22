@@ -1,4 +1,5 @@
 -DGLEW_STATIC
+-DNO_VULKAN
 -I/Users/ian/devel/ev/src
 -I/usr/local/include/SDL2
 -I/Users/ian/devel/ev++/vendor/json

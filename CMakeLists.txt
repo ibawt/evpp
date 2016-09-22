@@ -1,5 +1,5 @@
+cmake_minimum_required(VERSION 3.6)
 project(ev++)
-cmake_minimum_required(VERSION 2.8)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules/")
 find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
@@ -20,19 +20,20 @@ IF(MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 ENDIF(MSVC)
 
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNOMINMAX -D_USE_MATH_DEFINES")
 
 IF(WIN32)
   find_library(VULKAN_LIB NAMES vulkan-1 vulkan PATHS $ENV{VULKAN_SDK}/Source/lib32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WIN32_KHR")
-ELSE(WIN32)
+ELSEIF(LINUX)
   find_library(VULKAN_LIB NAMES libvulkan.so PATHS ${CMAKE_SOURCE_DIR}/libs/vulkan)
   find_package(ASSIMP REQUIRED)
   find_package(XCB REQUIRED)
   find_package(Threads REQUIRED)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_XCB_KHR")
-  # Todo : android?
+ELSE()
+  add_definitions(-DNO_VULKAN)
+  set(VULKAN_LIB "")
 ENDIF(WIN32)
 
 
