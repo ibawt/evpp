@@ -28,10 +28,19 @@ class ShaderProgram : Object
   void use() const;
 
   GLint get_attrib_loc(const std::string& s) const {
-    return glGetAttribLocation(id, s.c_str());
+    GLint i =  glGetAttribLocation(id, s.c_str());
+    if( i < 0 ) {
+      throw std::runtime_error("inavlid attribute location");
+    }
+    return i;
   }
   GLint get_uniform_loc(const std::string& s) const {
-    return glGetUniformLocation(id, s.c_str());
+    GLint i = glGetUniformLocation(id, s.c_str());
+    if( i < 0 ) {
+      printf("i = %d\n", i);
+      throw std::runtime_error("invalid uniform location");
+    }
+    return i;
   }
 
  private:

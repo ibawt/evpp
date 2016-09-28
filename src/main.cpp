@@ -17,13 +17,18 @@ public:
         batch(sheet, tex) {
     glDisable(GL_DEPTH_TEST);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, get_width(), get_height());
 
     transform.set_ortho(0, 800, 600, 0, 1, -1);
 
     auto s = batch.create_sprite({"blue_bird_1"});
     s->position.x = 400;
     s->position.y = 300;
+    s->scale = 2.0f;
+
+    auto s2 = batch.create_sprite({"background1"});
+
+    auto s3 = batch.create_sprite({"green_pipe_down"});
   }
 
   virtual void render() override {

@@ -16,6 +16,8 @@
 #include <OpenGL/glu.h>
 #endif
 
+#include <iostream>
+
 namespace ev {
 class Object {};
 
@@ -47,6 +49,13 @@ struct Size {
   Size() : width(0.0f), height(0.0f) {}
 };
 
+inline std::ostream& operator<<(std::ostream& os, const Size& size)
+{
+  os << "width: " << size.width
+     << " height: " << size.height;
+  return os;
+}
+
 struct Vec2 {
   float x;
   float y;
@@ -54,6 +63,13 @@ struct Vec2 {
   Vec2() : x(0.0f), y(0.0f) {}
   explicit Vec2(const Size &s) : x(s.width), y(s.height) {}
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Vec2& x)
+{
+  os << "x: " << x.x << " y: " << x.y;
+  return os;
+}
+
 struct Rectangle {
   Vec2 origin;
   Size size;
@@ -67,6 +83,12 @@ struct Rectangle {
   float top() const { return origin.y; }
   float bottom() const { return origin.y + size.height; }
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Rectangle& r)
+{
+  os << "origin[" << r.origin << "], size[" << r.size << "]";
+  return os;
+}
 
 enum class Result { Error, Ok };
 }

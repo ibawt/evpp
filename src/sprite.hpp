@@ -27,6 +27,33 @@ public:
     return frames[index];
   }
 
+  friend std::ostream& operator<<(std::ostream& os, const Mode& m)
+  {
+    switch(m) {
+      case Animation::Mode::LOOP:
+        os << "LOOP";
+        break;
+      case Animation::Mode::ONE_SHOT:
+        os << "ONE_SHOT";
+        break;
+      case Animation::Mode::REVERSE:
+        os << "REVERSE";
+        break;
+      case Animation::Mode::PING_PONG:
+        os << "PING PONG";
+        break;
+    }
+
+    return os;
+  }
+  inline friend std::ostream& operator<<(std::ostream& os, const Animation& anim) {
+    os << "Animation: delay: " << anim.delay << std::endl
+       << "time: " << anim.time << std::endl
+       << "mode: " << anim.mode << std::endl
+       << "index: " << anim.index << std::endl;
+
+    return os;
+  }
 private:
   float delay;
   float time;
@@ -34,6 +61,7 @@ private:
   uint32_t index;
   std::vector<std::shared_ptr<SpriteFrame>> frames;
 };
+
 
 class Sprite : public Object {
 public:
@@ -71,6 +99,17 @@ public:
   bool visible;
   float opacity;
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Sprite& s)
+{
+  os << "animation: " << s.animation
+     << "position: " << s.position << std::endl
+     << "rotation: " << s.rotation << std::endl
+     << "scale: " << s.scale << std::endl
+     << "visible: " << s.visible << std::endl
+     << "opacity: " << s.opacity << std::endl;
+  return os;
+}
 
 class PhysicsSprite : public Sprite {
 public:
