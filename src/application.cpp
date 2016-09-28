@@ -9,6 +9,8 @@ static vk::SurfaceKHR createVulkanSurface(const vk::Instance& instance, SDL_Wind
 static std::vector<const char*> getAvailableWSIExtensions();
 #endif
 
+static bool initGlew = false;
+
 static void initSDL()
 {
   if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -20,7 +22,9 @@ static void initSDL()
   }
 }
 
-Application::Application(int32_t width, int32_t height, std::string name) : width(width), height(height), name(name), context(nullptr), window(nullptr)
+Application::Application(int32_t width, int32_t height, std::string name) :
+    width(width), height(height), shouldClose(false),
+    name(name), context(nullptr), window(nullptr)
 {
   initSDL();
 
@@ -42,6 +46,20 @@ Application::Application(int32_t width, int32_t height, std::string name) : widt
 
   vkInstance = vk::createInstance(instInfo);
   #endif
+  window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED,
+                            SDL_WINDOWPOS_UNDEFINED,
+                            width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+
+#ifndef NO_VULKAN
+  vkSurface = createVulkanSurface(vkInstance, window);
+#else
+  context = SDL_GL_CreateContext(window);
+#endif
+
+  if(!initGlew) {
+    glewInit();
+    initGlew = true;
+  }
 }
 
 Application::~Application()
@@ -65,6 +83,11 @@ Result Application::close()
   if (vkInstance) {
     vkInstance.destroy();
   }
+  #else
+  if(context) {
+    SDL_GL_DeleteContext(context);
+    context = nullptr;
+  }
   #endif
 
   return Result::Ok;
@@ -72,17 +95,6 @@ Result Application::close()
 
 Result Application::show()
 {
-  window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED,
-    SDL_WINDOWPOS_UNDEFINED,
-    width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-  if (!window) {
-    return Result::Ok;
-  }
-
-  #ifndef NO_VULKAN
-  vkSurface = createVulkanSurface(vkInstance, window);
-  #endif
-
   return Result::Ok;
 }
 
@@ -96,10 +108,8 @@ Result Application::run()
     while (SDL_PollEvent(&e)) {
       switch (e.type) {
       case SDL_KEYDOWN:
-        printf("keydown\n");
         break;
       case SDL_KEYUP:
-        printf("keyup\n");
         break;
       case SDL_QUIT:
         shouldClose = true;
@@ -112,6 +122,8 @@ Result Application::run()
 
       update(static_cast<float>(dt));
       render();
+
+      SDL_GL_SwapWindow(window);
     }
   }
 

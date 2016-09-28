@@ -15,6 +15,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glew/include
   $ENV{VULKAN_SDK}/Include
   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm
+  ${CMAKE_CURRENT_SOURCE_DIR}/vendor/Box2D
   )
 IF(MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
@@ -45,6 +46,18 @@ add_executable(main src/main.cpp
   src/application.hpp
   src/sprite_sheet.hpp
   src/sprite_sheet.cpp
+  src/sprite.hpp
+  src/sprite.cpp
+  src/texture.hpp
+  src/texture.cpp
+  src/vertex_buff.hpp
+  src/vertex_buff.cpp
+  src/sprite_batch.hpp
+  src/sprite_batch.cpp
+  src/shader_program.cpp
+  src/shader_program.hpp
+  src/matrix4.hpp
+  src/matrix4.cpp
   src/ev.hpp
   vendor/glm/glm.hpp
   vendor/glew/src/glew.c

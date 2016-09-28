@@ -1,0 +1,104 @@
+{
+    "frames": {
+        "background1": {
+            "aliases": [],
+            "spriteColorRect": "{{0, 0}, {144, 256}}",
+            "spriteOffset": "{0, -0}",
+            "spriteSize": "{144, 256}",
+            "spriteSourceSize": "{144, 256}",
+            "spriteTrimmed": true,
+            "textureRect": "{{0, 0}, {144, 256}}",
+            "textureRotated": false
+        },
+        "background2": {
+            "aliases": [],
+            "spriteColorRect": "{{0, 0}, {144, 256}}",
+            "spriteOffset": "{0, 0}",
+            "spriteSize": "{144, 256}",
+            "spriteSourceSize": "{144, 256}",
+            "spriteTrimmed": true,
+            "textureRect": "{{146, 0}, {144, 256}}",
+            "textureRotated": false
+        },
+        "green_pipe_down": {
+            "aliases": [],
+            "spriteColorRect": "{{56, 320}, {83, 486}}",
+            "spriteOffset": "{0, 0}",
+            "spriteSize": "{27, 166}",
+            "spriteSourceSize": "{27, 166}",
+            "spriteTrimmed": true,
+            "textureRect": "{{56, 320}, {27, 166}}",
+            "textureRotated": false
+        },
+        "green_pipe_up": {
+            "aliases": [],
+            "spriteColorRect": "{{56, 320}, {83, 486}}",
+            "spriteOffset": "{0, 0}",
+            "spriteSize": "{28, 166}",
+            "spriteSourceSize": "{27, 166}",
+            "spriteTrimmed": true,
+            "textureRect": "{{83, 320}, {27, 166}}",
+            "textureRotated": false
+        },
+        "blue_bird_1": {
+            "aliases": [],
+            "spriteColorRect": "{{115, 329}, {132, 341}}",
+            "spriteOffset": "{0, 0}",
+            "spriteSize": "{17, 12}",
+            "spriteSourceSize": "{17, 12}",
+            "spriteTrimmed": true,
+            "textureRect": "{{115, 329}, {17, 12}}"
+        },
+        "blue_bird_2": {
+            "aliases": [],
+            "spriteColorRect": "{{115, 355}, {132, 367}}",
+            "spriteOffset": "{0, 0}",
+            "spriteSize": "{17, 12}",
+            "spriteSourceSize": "{17, 12}",
+            "spriteTrimmed": true,
+            "textureRect": "{{115, 355}, {17, 12}}"
+        },
+        "blue_bird_3": {
+            "aliases": [],
+            "spriteColorRect": "{{87, 491}, {104, 503}}",
+            "spriteOffset": "{0, 0}",
+            "spriteSize": "{17, 12}",
+            "spriteSourceSize": "{17, 12}",
+            "spriteTrimmed": true,
+            "textureRect": "{{87, 491}, {17, 12}}"
+        },
+        "ground": {
+            "aliases": [],
+            "spriteColorRect": "{{292, 0}, {460, 56}}",
+            "spriteOffset": "{0, 0}",
+            "spriteSize": "{168, 56}",
+            "spriteSourceSize": "{168, 56}",
+            "spriteTrimmed": true,
+            "textureRect": "{{292, 0}, {168, 56}}"
+        },
+        "start_button": {
+            "aliases": [],
+            "spriteColorRect": "{{354, 118}, {406, 174}}",
+            "spriteOffset": "{0, 0}",
+            "spriteSize": "{52, 29}",
+            "spriteSourceSize": "{52, 29}",
+            "spriteTrimmed": true,
+            "textureRect": "{{354, 118}, {52, 29}}"
+        }
+    },
+    "metadata": {
+        "format": 3,
+        "name": "flappybirds",
+        "premultipliedAlpha": false,
+        "size": "{512, 512}",
+        "target": {
+            "coordinatesFileExtension": ".json",
+            "coordinatesFileName": "flappybirds",
+            "name": "default",
+            "premultipliedAlpha": false,
+            "textureFileExtension": ".png",
+            "textureFileName": "flappybirds"
+        },
+        "version": "1.5.2"
+    }
+}

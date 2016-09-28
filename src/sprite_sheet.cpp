@@ -1,5 +1,4 @@
 #include "sprite_sheet.hpp"
-#include "json.hpp"
 #include <fstream>
 #include <sstream>
 #include <array>
@@ -63,30 +62,76 @@ static std::string get(const std::string& s, const json& j)
   return j.at(s).get<std::string>();
 }
 
-static SpriteFrame parse_sprite_frame(const json& j)
+static void fill_batch_verts(SpriteFrame& s)
 {
-  SpriteFrame s;
+  SpriteFrame::BatchVertices& bv = s.batch_verts;
 
-  s.trimmed = j.at("spriteTrimmed").get<bool>();
-  s.rotated = j.at("textureRotated").get<bool>();
+  bv[0].x = -s.size.width/2;
+  bv[0].y = -s.size.height/2;
+  bv[0].u = s.texture_rect.origin.x;
+  bv[0].v = s.texture_rect.origin.y;
 
-  s.source_size = parse_size(get("spriteSourceSize", j));
-  s.size = parse_size(get("spriteSize", j));
-  s.texture_rect = parse_rect(get("textureRect", j));
-  s.color_rect = parse_rect(get("spriteColorRect", j));
+  bv[1].x = s.size.width/2;
+  bv[1].y = -s.size.height/2;
+  bv[1].u = s.texture_rect.right();
+  bv[1].v = s.texture_rect.top();
 
-  return s;
+  bv[2].x = s.size.width/2;
+  bv[2].y = s.size.height/2;
+  bv[2].u = s.texture_rect.right();
+  bv[2].v = s.texture_rect.bottom();
+
+  bv[3] = bv[2];
+
+  bv[4].x = -s.size.width/2;
+  bv[4].y = s.size.height/2;
+  bv[4].u = s.texture_rect.left();
+  bv[4].v = s.texture_rect.bottom();
+
+  bv[5] = bv[0];
+}
+
+SpriteFrame::SpriteFrame(const json& j, const Size& textureSize)
+{
+  trimmed = j.at("spriteTrimmed").get<bool>();
+  try {
+    rotated = j.at("textureRotated").get<bool>();
+  } catch(std::exception & e) {
+    rotated = false;
+  }
+
+  source_size = parse_size(get("spriteSourceSize", j));
+  size = parse_size(get("spriteSize", j));
+  texture_rect = parse_rect(get("textureRect", j));
+  texture_rect.origin.x /= textureSize.width;
+  texture_rect.origin.y /= textureSize.height;
+  texture_rect.size.width /= textureSize.width;
+  texture_rect.size.height /= textureSize.height;
+  color_rect = parse_rect(get("spriteColorRect", j));
+  offset = Vec2(parse_size(get("spriteOffset", j)));
+
+  fill_batch_verts(*this);
 }
 
 SpriteSheet::SpriteSheet(const std::string& filename)
 {
-  json j = json::parse(std::ifstream(filename));
+  std::ifstream file(filename);
+  if(! file.good() )  {
+    throw std::runtime_error("file not exist");
+  }
+  json j = json::parse(file);
+
+  auto metadata = j.at("metadata").get<std::unordered_map<std::string, json>>();
+  textureSize = parse_size(get("size", metadata));
+  auto target = metadata.at("target").get<std::unordered_map<std::string, json>>();
+  textureName = get("textureFileName", target) + get("textureFileExtension", target);
 
   auto json_frames = j.at("frames").get<std::unordered_map<std::string, json>>();
 
   for (const auto& frame : json_frames) {
-    frames[frame.first] = parse_sprite_frame(frame.second);
+    frames[frame.first] = std::make_shared<SpriteFrame>(frame.second, textureSize);
   }
+
 }
 
 

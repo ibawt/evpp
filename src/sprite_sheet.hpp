@@ -3,7 +3,9 @@
 #include "ev.hpp"
 #include <array>
 #include <string>
+#include <memory>
 #include <unordered_map>
+#include "json.hpp"
 
 namespace ev {
 
@@ -11,9 +13,11 @@ class SpriteFrame : Object
 {
 public:
   SpriteFrame() : trimmed(false), rotated(false) {}
+  explicit SpriteFrame(const nlohmann::json&, const Size&);
 
   static const auto NUM_VERTS = 6;
-  std::string key;
+  typedef std::array<BatchVertex, NUM_VERTS> BatchVertices;
+
   Size source_size;
   Size size;
   bool trimmed;
@@ -21,7 +25,7 @@ public:
   Vec2 offset;
   bool rotated;
   Rectangle color_rect;
-  std::array<BatchVertex, NUM_VERTS> batch_verts;
+  BatchVertices batch_verts;
 };
 
 class SpriteSheet : Object
@@ -30,9 +34,13 @@ public:
   explicit SpriteSheet(const std::string& filename);
   SpriteSheet() { }
 
-  SpriteFrame& get_frame(const std::string&s);
-  const SpriteFrame& get_frame(const std::string& s) const;
+  std::shared_ptr<SpriteFrame>& operator[](const std::string& s) { return frames.at(s); }
+  const std::shared_ptr<SpriteFrame>& operator[](const std::string& s) const { return frames.at(s); }
+
+  const std::string& texture_filename() const { return textureName; }
 private:
-  std::unordered_map<std::string, SpriteFrame> frames;
+  std::string textureName;
+  Size        textureSize;
+  std::unordered_map<std::string, std::shared_ptr<SpriteFrame>> frames;
 };
 }
