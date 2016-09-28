@@ -21,6 +21,7 @@ public:
                        std::shared_ptr<Texture> texture);
   std::shared_ptr<Sprite> create_sprite(std::initializer_list<const char *>);
 
+  void remove(const std::shared_ptr<Sprite>& s);
   void set_texture(std::shared_ptr<Texture> t) { texture = t; }
   void update(float dt);
   void render(const Matrix4 &);

@@ -3,6 +3,8 @@
 #include "texture.hpp"
 #include "matrix4.hpp"
 
+#include <algorithm>
+
 static const auto animationVertexShader =
     "#version 120\n"
     "attribute vec2 a_position;\n"
@@ -58,6 +60,13 @@ SpriteBatch::create_sprite(std::initializer_list<const char *> frames) {
 
   sprites.push_back(s);
   return sprites.back();
+}
+
+void SpriteBatch::remove(const std::shared_ptr<Sprite>& s)
+{
+  auto i = std::find(sprites.begin(), sprites.end(), s);
+
+  sprites.erase(i);
 }
 
 void SpriteBatch::update(float dt) {
