@@ -105,13 +105,13 @@ void SpriteBatch::render(const glm::mat4 &m) {
   glEnableVertexAttribArray(opacity);
 
   glVertexAttribPointer(pos, 2, GL_FLOAT, GL_TRUE, sizeof(BatchVertex),
-                        OFFSET_OF(BatchVertex, x));
+                        OFFSET_OF(BatchVertex, position));
   glVertexAttribPointer(tex, 2, GL_FLOAT, GL_TRUE, sizeof(BatchVertex),
-                        OFFSET_OF(BatchVertex, u));
+                        OFFSET_OF(BatchVertex, tex));
   glVertexAttribPointer(transform, 2, GL_FLOAT, GL_TRUE, sizeof(BatchVertex),
                         OFFSET_OF(BatchVertex, rotation));
   glVertexAttribPointer(translation, 2, GL_FLOAT, GL_TRUE, sizeof(BatchVertex),
-                        OFFSET_OF(BatchVertex, tx));
+                        OFFSET_OF(BatchVertex, translation));
   glVertexAttribPointer(opacity, 1, GL_FLOAT, GL_TRUE, sizeof(BatchVertex),
                         OFFSET_OF(BatchVertex, opacity));
 

@@ -78,8 +78,7 @@ public:
     for (int i = 0; i < 6; ++i) {
       array[i].scale = scale;
       array[i].rotation = rotation;
-      array[i].tx = position.x;
-      array[i].ty = position.y;
+      array[i].translation = position;
       array[i].opacity = opacity;
     }
     return 6;

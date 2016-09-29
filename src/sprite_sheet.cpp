@@ -79,37 +79,29 @@ static void fill_batch_verts(SpriteFrame& s)
 {
   SpriteFrame::BatchVertices& bv = s.batch_verts;
 
-  bv[0].x = -s.size.width/2;
-  bv[0].y = -s.size.height/2;
-  bv[0].u = s.texture_rect.origin.x;
-  bv[0].v = s.texture_rect.origin.y;
+  bv[0].position.x = -s.size.width/2;
+  bv[0].position.y = -s.size.height/2;
+  bv[0].tex.x = s.texture_rect.origin.x;
+  bv[0].tex.y = s.texture_rect.origin.y;
 
-  bv[1].x = s.size.width/2;
-  bv[1].y = -s.size.height/2;
-  bv[1].u = s.texture_rect.right();
-  bv[1].v = s.texture_rect.top();
+  bv[1].position.x = s.size.width/2;
+  bv[1].position.y = -s.size.height/2;
+  bv[1].tex.x = s.texture_rect.right();
+  bv[1].tex.y = s.texture_rect.top();
 
-  bv[2].x = s.size.width/2;
-  bv[2].y = s.size.height/2;
-  bv[2].u = s.texture_rect.right();
-  bv[2].v = s.texture_rect.bottom();
+  bv[2].position.x = s.size.width/2;
+  bv[2].position.y = s.size.height/2;
+  bv[2].tex.x = s.texture_rect.right();
+  bv[2].tex.y = s.texture_rect.bottom();
 
   bv[3] = bv[2];
 
-  bv[4].x = -s.size.width/2;
-  bv[4].y = s.size.height/2;
-  bv[4].u = s.texture_rect.left();
-  bv[4].v = s.texture_rect.bottom();
+  bv[4].position.x = -s.size.width/2;
+  bv[4].position.y = s.size.height/2;
+  bv[4].tex.x = s.texture_rect.left();
+  bv[4].tex.y = s.texture_rect.bottom();
 
   bv[5] = bv[0];
-
-  for(auto& x : s.batch_verts) {
-    x.scale = 1.0f;
-    x.rotation = 0.0f;
-    x.tx = 0.0f;
-    x.ty = 0.0f;
-    x.opacity = 1.0f;
-  }
 }
 
 SpriteFrame::SpriteFrame(const json& j, const Size& textureSize)

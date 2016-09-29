@@ -40,11 +40,17 @@ struct BlendMode {
 };
 
 struct BatchVertex {
-  float x, y, u, v, rotation, scale, tx, ty, opacity;
+  vec2  position;
+  vec2  tex;
+  float rotation;
+  float scale;
+  vec2  translation;
+  float opacity;
 
-  BatchVertex()
-      : x(0.0f), y(0.0f), u(0.0f), v(0.0f), rotation(0.0f), scale(0.0f),
-        tx(0.0f), ty(0.0f), opacity(0.0f) {}
+  BatchVertex() :
+      position(0.0f, 0.0f), tex(0.0f, 0.0f),
+      rotation(0.0f), scale(0.0f),
+      translation(0.0f, 0.0f), opacity(0.0f) {}
 };
 
 struct Size {
