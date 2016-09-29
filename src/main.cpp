@@ -8,13 +8,16 @@
 #include <iostream>
 #include <memory>
 
+#include "Box2D/Box2D.h"
+
 class TestBed : public ev::Application {
 public:
   TestBed()
       : ev::Application(800, 600, "ev"),
-        tex(std::make_shared<ev::Texture>("flappybirds.png")),
-        sheet(std::make_shared<ev::SpriteSheet>("flappybird.json")),
-        batch(sheet, tex) {
+      world(b2Vec2(0.0f, 9.0f)),
+      tex(std::make_shared<ev::Texture>("flappybirds.png")),
+      sheet(std::make_shared<ev::SpriteSheet>("flappybird.json")),
+      batch(sheet, tex) {
     glDisable(GL_DEPTH_TEST);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0, 0, get_width(), get_height());
@@ -29,6 +32,9 @@ public:
     auto s2 = batch.create_sprite({"background1"});
 
     auto s3 = batch.create_sprite({"green_pipe_down"});
+
+    world.SetAllowSleeping(true);
+    world.SetContinuousPhysics(true);
   }
 
   virtual void render() override {
@@ -36,9 +42,13 @@ public:
     batch.render(transform);
   }
 
-  virtual void update(const float dt) override { batch.update(dt); }
+  virtual void update(const float dt) override {
+    batch.update(dt);
+    world.Step(dt, 8, 3);
+  }
 
 private:
+  b2World     world;
   ev::Matrix4 transform;
   std::shared_ptr<ev::Texture> tex;
   std::shared_ptr<ev::SpriteSheet> sheet;

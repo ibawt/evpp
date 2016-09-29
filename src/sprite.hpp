@@ -46,7 +46,7 @@ public:
 
     return os;
   }
-  inline friend std::ostream& operator<<(std::ostream& os, const Animation& anim) {
+  friend std::ostream& operator<<(std::ostream& os, const Animation& anim) {
     os << "Animation: delay: " << anim.delay << std::endl
        << "time: " << anim.time << std::endl
        << "mode: " << anim.mode << std::endl
@@ -73,9 +73,9 @@ public:
     }
 
     auto &frame = animation.current_frame()->batch_verts;
+    std::copy(frame.begin(), frame.end(), array);
 
     for (int i = 0; i < 6; ++i) {
-      array[i] = frame[i];
       array[i].scale = scale;
       array[i].rotation = rotation;
       array[i].tx = position.x;
