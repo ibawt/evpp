@@ -6,7 +6,6 @@
 #include "sprite_sheet.hpp"
 #include "texture.hpp"
 #include "sprite.hpp"
-#include "matrix4.hpp"
 #include "vertex_buff.hpp"
 
 #include <memory>
@@ -24,7 +23,7 @@ public:
   void remove(const std::shared_ptr<Sprite>& s);
   void set_texture(std::shared_ptr<Texture> t) { texture = t; }
   void update(float dt);
-  void render(const Matrix4 &);
+  void render(const glm::mat4 &);
   void set_blend_mode(BlendMode m) { blend_mode = m; }
   BlendMode &get_blend_mode() { return blend_mode; }
 

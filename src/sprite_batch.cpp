@@ -1,7 +1,7 @@
 #include "sprite_batch.hpp"
 #include "sprite_sheet.hpp"
 #include "texture.hpp"
-#include "matrix4.hpp"
+#include "gtc/type_ptr.hpp"
 
 #include <algorithm>
 
@@ -84,13 +84,13 @@ void SpriteBatch::update(float dt) {
 
 #define OFFSET_OF(x, y) (void *)(offsetof(x, y))
 
-void SpriteBatch::render(const Matrix4 &m) {
+void SpriteBatch::render(const glm::mat4 &m) {
   vertex_buff.bind();
   glEnable(GL_TEXTURE_2D);
   texture->bind();
   program.use();
 
-  glUniformMatrix4fv(program.get_uniform_loc("u_projTrans"), 1, GL_FALSE, m.m);
+  glUniformMatrix4fv(program.get_uniform_loc("u_projTrans"), 1, GL_FALSE, glm::value_ptr(m));
 
   int pos = program.get_attrib_loc("a_position");
   int tex = program.get_attrib_loc("a_texCoord0");

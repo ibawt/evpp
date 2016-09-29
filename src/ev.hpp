@@ -16,6 +16,8 @@
 #include <OpenGL/glu.h>
 #endif
 
+#include "glm.hpp"
+
 #include <iostream>
 
 namespace ev {
