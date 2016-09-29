@@ -28,6 +28,8 @@ public:
   BatchVertices batch_verts;
 };
 
+std::ostream& operator<<(std::ostream& os, const SpriteFrame& s);
+
 class SpriteSheet : Object
 {
 public:

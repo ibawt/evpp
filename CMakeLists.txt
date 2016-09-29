@@ -54,7 +54,7 @@ add_executable(main src/main.cpp
   src/vertex_buff.cpp
   src/sprite_batch.hpp
   src/sprite_batch.cpp
-  src/shader_program.cpp
+  src/shader_progra.mcpp
   src/shader_program.hpp
   src/matrix4.hpp
   src/matrix4.cpp

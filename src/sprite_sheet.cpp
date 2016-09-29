@@ -7,10 +7,23 @@ using json = nlohmann::json;
 
 namespace ev {
 
+std::ostream& operator<<(std::ostream& os, const SpriteFrame& s)
+{
+  os << "Source Size: " << s.source_size << std::endl
+     << "Size: " << s.size << std::endl
+     << "Trimmed: " << s.trimmed << std::endl
+     << "Texture Rectangle: " << s.texture_rect << std::endl
+     << "Offset: " << s.offset << std::endl
+     << "Rotated: " << s.rotated << std::endl
+     << "Color Rectangle: " << s.color_rect << std::endl;
+  return os;
+}
+
 static std::vector<int32_t> parse_numbers(const std::string& s, unsigned n)
 {
   std::istringstream is(s);
-  std::vector<int32_t> numbers(n);
+  std::vector<int32_t> numbers;
+  numbers.reserve(n);
 
   while (!is.eof() && numbers.size() < n) {
     char c = is.peek();
@@ -89,6 +102,14 @@ static void fill_batch_verts(SpriteFrame& s)
   bv[4].v = s.texture_rect.bottom();
 
   bv[5] = bv[0];
+
+  for(auto& x : s.batch_verts) {
+    x.scale = 1.0f;
+    x.rotation = 0.0f;
+    x.tx = 0.0f;
+    x.ty = 0.0f;
+    x.opacity = 1.0f;
+  }
 }
 
 SpriteFrame::SpriteFrame(const json& j, const Size& textureSize)
