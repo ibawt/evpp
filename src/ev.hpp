@@ -19,10 +19,10 @@
 namespace ev {
 class Object {};
 
-static inline float radian2degree(float rads) { return rads * 180.0f / M_PI; }
+static inline float radian2degree(float rads) { return static_cast<float>(rads * 180.0f / M_PI); }
 
 static inline float degree2radian(float degrees) {
-  return degrees * M_PI / 180.0f;
+  return static_cast<float>(degrees * M_PI / 180.0f);
 }
 
 struct BlendMode {

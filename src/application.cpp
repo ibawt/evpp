@@ -2,6 +2,10 @@
 #include <vector>
 #include <iostream>
 
+#ifndef NO_VULKAN
+#include "SDL_syswm.h"
+#endif
+
 namespace ev
 {
 #ifndef NO_VULKAN

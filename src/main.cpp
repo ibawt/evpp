@@ -8,12 +8,20 @@
 #include <iostream>
 #include <memory>
 
+#define STRINGIFY(x) #x
+
+static std::string filepath(const std::string& filename)
+{
+	static const std::string source_directory = STRINGIFY(SOURCE_DIRECTORY);
+	return std::string(STRINGIFY(SOURCE_DIRECTORY)) + "/" + filename;
+}
+
 class TestBed : public ev::Application {
 public:
   TestBed()
       : ev::Application(800, 600, "ev"),
-        tex(std::make_shared<ev::Texture>("flappybirds.png")),
-        sheet(std::make_shared<ev::SpriteSheet>("flappybird.json")),
+        tex(std::make_shared<ev::Texture>(filepath("flappybirds.png"))),
+        sheet(std::make_shared<ev::SpriteSheet>(filepath("flappybird.json"))),
         batch(sheet, tex) {
     glDisable(GL_DEPTH_TEST);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

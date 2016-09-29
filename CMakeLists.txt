@@ -62,4 +62,5 @@ add_executable(main src/main.cpp
   vendor/glm/glm.hpp
   vendor/glew/src/glew.c
   )
+add_definitions(-DSOURCE_DIRECTORY=${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(main ${SDL2_IMAGE_LIBRARY} ${SDL2_LIBRARY} ${CONAN_LIBS} Box2D ${OPENGL_LIBRARY} ${VULKAN_LIB})
