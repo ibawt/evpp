@@ -129,7 +129,7 @@ SpriteFrame::SpriteFrame(const json& j, const Size& textureSize)
   texture_rect.size.width /= textureSize.width;
   texture_rect.size.height /= textureSize.height;
   color_rect = parse_rect(get("spriteColorRect", j));
-  offset = Vec2(parse_size(get("spriteOffset", j)));
+  offset = to_vec2(parse_size(get("spriteOffset", j)));
 
   fill_batch_verts(*this);
 }

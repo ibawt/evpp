@@ -21,6 +21,9 @@
 #include <iostream>
 
 namespace ev {
+using mat4 = glm::mat4;
+using vec2 = glm::vec2;
+
 class Object {};
 
 static inline float radian2degree(float rads) { return static_cast<float>(rads * 180.0f / M_PI); }
@@ -58,26 +61,12 @@ inline std::ostream& operator<<(std::ostream& os, const Size& size)
   return os;
 }
 
-struct Vec2 {
-  float x;
-  float y;
-  Vec2(float x, float y) : x(x), y(y) {}
-  Vec2() : x(0.0f), y(0.0f) {}
-  explicit Vec2(const Size &s) : x(s.width), y(s.height) {}
-};
-
-inline std::ostream& operator<<(std::ostream& os, const Vec2& x)
-{
-  os << "x: " << x.x << " y: " << x.y;
-  return os;
-}
-
 struct Rectangle {
-  Vec2 origin;
+  vec2 origin;
   Size size;
 
   Rectangle(float x, float y, float w, float h) : origin(x, y), size(w, h) {}
-  Rectangle(Vec2 origin, Size size) : origin(origin), size(size) {}
+  Rectangle(vec2 origin, Size size) : origin(origin), size(size) {}
   Rectangle() {}
 
   float left() const { return origin.x; }
@@ -86,10 +75,21 @@ struct Rectangle {
   float bottom() const { return origin.y + size.height; }
 };
 
+inline std::ostream& operator<<(std::ostream& os, const vec2& v)
+{
+  os << "x: " << v.x << ", y: " << v.y;
+  return os;
+}
+
 inline std::ostream& operator<<(std::ostream& os, const Rectangle& r)
 {
   os << "origin[" << r.origin << "], size[" << r.size << "]";
   return os;
+}
+
+inline vec2 to_vec2(const Size& size)
+{
+  return vec2{size.width, size.height};
 }
 
 enum class Result { Error, Ok };

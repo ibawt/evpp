@@ -22,7 +22,7 @@ public:
   Size size;
   bool trimmed;
   Rectangle texture_rect;
-  Vec2 offset;
+  vec2 offset;
   bool rotated;
   Rectangle color_rect;
   BatchVertices batch_verts;

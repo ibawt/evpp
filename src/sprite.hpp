@@ -93,7 +93,7 @@ public:
   }
 
   Animation animation;
-  Vec2 position;
+  vec2 position;
   float rotation;
   float scale;
   bool visible;
