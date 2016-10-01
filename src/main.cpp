@@ -23,6 +23,7 @@ public:
   TestBed()
       : ev::Application(800, 600, "ev"),
       world(b2Vec2(0.0f, 9.0f)),
+      transform(glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 1.0f, -1.0f)),
       tex(std::make_shared<ev::Texture>(filepath("flappybirds.png"))),
       sheet(std::make_shared<ev::SpriteSheet>(filepath("flappybird.json"))),
       batch(sheet, tex) {
@@ -30,9 +31,7 @@ public:
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0, 0, get_width(), get_height());
 
-    transform = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, 1.0f, -1.0f);
-
-    auto s = batch.create_sprite({"blue_bird_1"});
+    auto s = batch.create_sprite({"blue_bird_1", "blue_bird_2", "blue_bird_3"});
     s->position.x = 400;
     s->position.y = 300;
     s->scale = 5.0f;
@@ -51,6 +50,7 @@ public:
   }
 
   virtual void update(const float dt) override {
+    // printf("%f\n", dt);
     batch.update(dt);
     world.Step(dt, 8, 3);
   }

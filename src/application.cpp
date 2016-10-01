@@ -1,7 +1,7 @@
 #include "application.hpp"
 #include <vector>
 #include <iostream>
-
+#include <chrono>
 #ifndef NO_VULKAN
 #include "SDL_syswm.h"
 #endif
@@ -104,9 +104,8 @@ Result Application::show()
 
 Result Application::run()
 {
+  auto t1 = std::chrono::high_resolution_clock::now();
   while (!shouldClose) {
-    const auto t1 = SDL_GetPerformanceCounter();
-
     SDL_Event e;
 
     while (SDL_PollEvent(&e)) {
@@ -119,16 +118,18 @@ Result Application::run()
         shouldClose = true;
         break;
       }
-
-      const auto t2 = SDL_GetPerformanceCounter() - t1;
-
-      const auto dt = ((t2 - t2) * 1000.0) / SDL_GetPerformanceFrequency();
-
-      update(static_cast<float>(dt));
-      render();
-
-      SDL_GL_SwapWindow(window);
     }
+
+    auto t2 = std::chrono::high_resolution_clock::now();
+
+    auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+
+    t1 = t2;
+
+    update(static_cast<float>(dt/1000.0f));
+    render();
+
+    SDL_GL_SwapWindow(window);
   }
 
   return Result::Ok;

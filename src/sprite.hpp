@@ -54,6 +54,7 @@ public:
 
     return os;
   }
+  void set_delay(float f) { delay = f; }
 private:
   float delay;
   float time;

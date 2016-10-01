@@ -26,7 +26,9 @@ using vec2 = glm::vec2;
 
 class Object {};
 
-static inline float radian2degree(float rads) { return static_cast<float>(rads * 180.0f / M_PI); }
+static inline float radian2degree(float rads) {
+  return static_cast<float>(rads * 180.0f / M_PI);
+}
 
 static inline float degree2radian(float degrees) {
   return static_cast<float>(degrees * M_PI / 180.0f);
@@ -47,10 +49,9 @@ struct BatchVertex {
   vec2  translation;
   float opacity;
 
-  BatchVertex() :
-      position(0.0f, 0.0f), tex(0.0f, 0.0f),
-      rotation(0.0f), scale(0.0f),
-      translation(0.0f, 0.0f), opacity(0.0f) {}
+  BatchVertex()
+      : position(0.0f, 0.0f), tex(0.0f, 0.0f), rotation(0.0f), scale(0.0f),
+        translation(0.0f, 0.0f), opacity(0.0f) {}
 };
 
 struct Size {
@@ -60,10 +61,8 @@ struct Size {
   Size() : width(0.0f), height(0.0f) {}
 };
 
-inline std::ostream& operator<<(std::ostream& os, const Size& size)
-{
-  os << "width: " << size.width
-     << " height: " << size.height;
+inline std::ostream &operator<<(std::ostream &os, const Size &size) {
+  os << "width: " << size.width << " height: " << size.height;
   return os;
 }
 
@@ -81,22 +80,17 @@ struct Rectangle {
   float bottom() const { return origin.y + size.height; }
 };
 
-inline std::ostream& operator<<(std::ostream& os, const vec2& v)
-{
+inline std::ostream &operator<<(std::ostream &os, const vec2 &v) {
   os << "x: " << v.x << ", y: " << v.y;
   return os;
 }
 
-inline std::ostream& operator<<(std::ostream& os, const Rectangle& r)
-{
+inline std::ostream &operator<<(std::ostream &os, const Rectangle &r) {
   os << "origin[" << r.origin << "], size[" << r.size << "]";
   return os;
 }
 
-inline vec2 to_vec2(const Size& size)
-{
-  return vec2{size.width, size.height};
-}
+inline vec2 to_vec2(const Size &size) { return vec2{size.width, size.height}; }
 
 enum class Result { Error, Ok };
 }
