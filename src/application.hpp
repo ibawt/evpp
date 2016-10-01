@@ -30,15 +30,15 @@ private:
   Application& operator=(const Application&) = delete;
 
   #ifndef NO_VULKAN
-  vk::Instance vkInstance;
-  vk::SurfaceKHR vkSurface;
+  vk::Instance vkInstance = VK_NULL_HANDLE;
+  vk::SurfaceKHR vkSurface = VK_NULL_HANDLE;
   #endif
-  int32_t        width;
-  int32_t        height;
-  bool           shouldClose;
+  int32_t        width = 0;
+  int32_t        height = 0;
+  bool           shouldClose = false;
   std::string    name;
-  SDL_GLContext  context;
-  SDL_Window    *window;
+  SDL_GLContext  context = nullptr;
+  SDL_Window    *window = nullptr;
 };
 
 }

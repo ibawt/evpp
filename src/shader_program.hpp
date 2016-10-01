@@ -15,7 +15,7 @@ class Shader : Object {
   Shader(const Shader&) = delete;
   Shader& operator=(const Shader&) = delete;
 
-  GLuint id;
+  GLuint id = 0;
 };
 
 class ShaderProgram : Object
@@ -47,7 +47,7 @@ class ShaderProgram : Object
   ShaderProgram(const ShaderProgram&) = delete;
   ShaderProgram& operator=(const ShaderProgram&) = delete;
 
-  GLuint id;
+  GLuint id = 0;
   Shader vertex;
   Shader fragment;
 };

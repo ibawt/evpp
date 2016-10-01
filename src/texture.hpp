@@ -17,7 +17,7 @@ class Texture : Object
   Texture(const Texture&) = delete;
   Texture& operator=(const Texture&) = delete;
 
-  GLuint id;
+  GLuint id = 0;
   Size size;
 };
 }

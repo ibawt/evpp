@@ -56,10 +56,10 @@ public:
   }
   void set_delay(float f) { delay = f; }
 private:
-  float delay;
-  float time;
-  Mode mode;
-  uint32_t index;
+  float delay = 0.3f;
+  float time = 0.0f;
+  Mode mode = Mode::LOOP;
+  uint32_t index = 0;
   std::vector<std::shared_ptr<SpriteFrame>> frames;
 };
 
@@ -94,10 +94,10 @@ public:
 
   Animation animation;
   vec2 position;
-  float rotation;
-  float scale;
-  bool visible;
-  float opacity;
+  float rotation = 0.0f;
+  float scale = 1.0f;
+  bool visible = true;
+  float opacity = 1.0f;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Sprite& s)
@@ -134,8 +134,8 @@ public:
   }
 
 private:
-  const float ptm_ratio;
-  b2Body *body;
+  const float ptm_ratio = 32.0f;
+  b2Body *body = nullptr;
 };
 }
 #endif
