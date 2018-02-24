@@ -6,8 +6,8 @@
 
 namespace ev {
 
-template<class T>
-class VertexBuff : Object
+template<class T, GLenum target = GL_ARRAY_BUFFER, GLenum draw_mode = GL_DYNAMIC_DRAW>
+class VertexBuff
 {
  public:
   static const auto DEFAULT_COUNT = 64;
@@ -34,25 +34,28 @@ class VertexBuff : Object
 
     bind();
 
-    buff.reserve(newsize);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(T)*newsize, buff.data(), GL_DYNAMIC_DRAW);
+    buff.resize(newsize);
+    std::memset( buff.data(), 0, sizeof(T)*buff.size());
+    glBufferData(target, sizeof(T)*newsize, buff.data(), draw_mode);
   }
 
   void bind() const
   {
-    glBindBuffer(GL_ARRAY_BUFFER, id);
+    glBindBuffer(target, id);
   }
 
   T* map()
   {
     bind();
-    return static_cast<T*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+    return static_cast<T*>(glMapBuffer(target, GL_WRITE_ONLY));
   }
 
   void unmap()
   {
-    glUnmapBuffer(GL_ARRAY_BUFFER);
+    glUnmapBuffer(target);
   }
+
+  size_t size() const { return buff.size(); }
  private:
   VertexBuff(const VertexBuff&) = delete;
   VertexBuff& operator=(const VertexBuff&) = delete;

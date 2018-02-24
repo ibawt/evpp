@@ -17,14 +17,13 @@
 #endif
 
 #include "glm.hpp"
-
+#include "json.hpp"
 #include <iostream>
 
 namespace ev {
 using mat4 = glm::mat4;
 using vec2 = glm::vec2;
-
-class Object {};
+using json = nlohmann::json;
 
 static inline float radian2degree(float rads) {
   return static_cast<float>(rads * 180.0f / M_PI);
@@ -42,16 +41,21 @@ struct BlendMode {
 };
 
 struct BatchVertex {
-  vec2  position;
-  vec2  tex;
+  vec2 position;
+  vec2 tex;
   float rotation;
   float scale;
-  vec2  translation;
+  vec2 translation;
   float opacity;
 
   BatchVertex()
       : position(0.0f, 0.0f), tex(0.0f, 0.0f), rotation(0.0f), scale(0.0f),
         translation(0.0f, 0.0f), opacity(0.0f) {}
+};
+
+class BatchVertexFiller {
+public:
+  virtual uint32_t fill(BatchVertex*) const = 0;
 };
 
 struct Size {
@@ -91,6 +95,9 @@ inline std::ostream &operator<<(std::ostream &os, const Rectangle &r) {
 }
 
 inline vec2 to_vec2(const Size &size) { return vec2{size.width, size.height}; }
-
-enum class Result { Error, Ok };
 }
+
+class EVException : public std::runtime_error {
+public:
+  EVException(const char *s) : std::runtime_error(s) {}
+};

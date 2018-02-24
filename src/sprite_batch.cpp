@@ -1,7 +1,7 @@
 #include "sprite_batch.hpp"
+#include "gtc/type_ptr.hpp"
 #include "sprite_sheet.hpp"
 #include "texture.hpp"
-#include "gtc/type_ptr.hpp"
 
 #include <algorithm>
 
@@ -40,57 +40,25 @@ static const auto defaultFragmentShader =
 
 namespace ev {
 
-SpriteBatch::SpriteBatch(std::shared_ptr<SpriteSheet> sheet)
-    : blend_mode(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA), filled_vertex_count(0),
-      program(animationVertexShader, defaultFragmentShader), sheet(sheet) {}
+SpriteBatch::SpriteBatch(std::shared_ptr<Texture> tex)
+    : program(animationVertexShader, defaultFragmentShader), texture(tex) {}
 
-SpriteBatch::SpriteBatch(std::shared_ptr<SpriteSheet> sheet,
-                         std::shared_ptr<Texture> tex)
-    : blend_mode(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA), filled_vertex_count(0),
-      program(animationVertexShader, defaultFragmentShader), texture(tex),
-      sheet(sheet) {}
-
-std::shared_ptr<Sprite>
-SpriteBatch::create_sprite(std::initializer_list<const char *> frames) {
-  auto s = std::make_shared<Sprite>();
-
-  for (auto frame : frames) {
-    s->animation.add_frame((*sheet)[std::string(frame)]);
+  SpriteBatch::SpriteBatch(const SpriteBatch& s) : blend_mode(s.blend_mode), program(animationVertexShader, defaultFragmentShader), texture(s.texture)
+  {
+    vertex_buff.set_capacity(s.vertex_buff.size());
   }
-
-  sprites.push_back(s);
-  return sprites.back();
-}
-
-void SpriteBatch::remove(const std::shared_ptr<Sprite>& s)
-{
-  auto i = std::find(sprites.begin(), sprites.end(), s);
-
-  sprites.erase(i);
-}
-
-void SpriteBatch::update(float dt) {
-  auto b = vertex_buff.map();
-  filled_vertex_count = 0;
-
-  for (auto &s : sprites) {
-    s->update(dt);
-
-    filled_vertex_count += s->fill(b + filled_vertex_count);
-  }
-
-  vertex_buff.unmap();
-}
 
 #define OFFSET_OF(x, y) (void *)(offsetof(x, y))
 
-void SpriteBatch::render(const glm::mat4 &m) {
+void SpriteBatch::render(Filler &filler, const glm::mat4 &m) {
+  filler.unmap();
   vertex_buff.bind();
   glEnable(GL_TEXTURE_2D);
   texture->bind();
   program.use();
 
-  glUniformMatrix4fv(program.get_uniform_loc("u_projTrans"), 1, GL_FALSE, glm::value_ptr(m));
+  glUniformMatrix4fv(program.get_uniform_loc("u_projTrans"), 1, GL_FALSE,
+                     glm::value_ptr(m));
 
   int pos = program.get_attrib_loc("a_position");
   int tex = program.get_attrib_loc("a_texCoord0");
@@ -118,6 +86,6 @@ void SpriteBatch::render(const glm::mat4 &m) {
   glEnable(GL_BLEND);
   glBlendFunc(blend_mode.src, blend_mode.dst);
 
-  glDrawArrays(GL_TRIANGLES, 0, filled_vertex_count);
+  glDrawArrays(GL_TRIANGLES, 0, filler.num_filled_vertices());
 }
 }

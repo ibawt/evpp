@@ -4,18 +4,21 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules/")
 find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
-set(CMAKE_CXX_STANDARD 11)
+find_package(Boost)
+set(CMAKE_CXX_STANDARD 17)
 set(BOX2D_BUILD_EXAMPLES false)
 set(BOX2D_BUILD_UNITTESTS false)
 set(BOX2D_INSTALL_DOC false)
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/json
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
   ${SDL2_INCLUDE_DIR}
   ${SDL2_IMAGE_INCLUDE_DIRS}
   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glew/include
   $ENV{VULKAN_SDK}/Include
   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm
   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/Box2D
+  ${Boost_INCLUDE_DIRS}
   )
 IF(MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
@@ -37,8 +40,8 @@ ELSE()
   set(VULKAN_LIB "")
 ENDIF(WIN32)
 
+set(CMAKE_BUILD_TYPE Debug)
 
-add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 add_subdirectory( vendor/Box2D )
 add_definitions(-DGLEW_STATIC)
 add_executable(main src/main.cpp
@@ -57,6 +60,10 @@ add_executable(main src/main.cpp
   src/shader_program.cpp
   src/shader_program.hpp
   src/ev.hpp
+  src/sprite_frame.hpp
+  src/sprite_frame.cpp
+  src/tile_map.hpp
+  src/tile_map.cpp
   vendor/glm/glm.hpp
   vendor/glew/src/glew.c
   )

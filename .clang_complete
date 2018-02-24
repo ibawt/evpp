@@ -1,9 +1,11 @@
 -DGLEW_STATIC
 -DNO_VULKAN
--I/Users/ian/devel/ev/src
+-I/Users/ianquick/devel/ev/src
 -I/usr/local/include/SDL2
--I/Users/ian/devel/ev++/vendor/json
--I/Users/ian/devel/ev++/vendor/glm
--I/Users/ian/devel/ev++/vendor/Box2D
--I/Users/ian/devel/ev++/src
--std=c++14
+-I/Users/ianquick/devel/ev++/vendor/json
+-I/Users/ianquick/devel/ev++/vendor/glew/include
+-I/Users/ianquick/devel/ev++/vendor/glm
+-I/Users/ianquick/devel/ev++/vendor/Box2D
+-I/Users/ianquick/devel/ev++/src
+-Wno-pragma-once-outside-header
+-std=c++1z

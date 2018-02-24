@@ -1,48 +1,27 @@
 #pragma once
 
 #include "ev.hpp"
-#include <array>
-#include <string>
+#include "sprite.hpp"
 #include <memory>
+#include <string>
 #include <unordered_map>
-#include "json.hpp"
 
 namespace ev {
-
-class SpriteFrame : Object
-{
+class SpriteSheet {
 public:
-  SpriteFrame() : trimmed(false), rotated(false) {}
-  explicit SpriteFrame(const nlohmann::json&, const Size&);
+  explicit SpriteSheet(const std::string &filename);
 
-  static const auto NUM_VERTS = 6;
-  typedef std::array<BatchVertex, NUM_VERTS> BatchVertices;
+  const std::shared_ptr<SpriteFrame> &operator[](const std::string &s) const {
+    return frames.at(s);
+  }
 
-  Size source_size;
-  Size size;
-  bool trimmed;
-  Rectangle texture_rect;
-  vec2 offset;
-  bool rotated;
-  Rectangle color_rect;
-  BatchVertices batch_verts;
-};
+  Sprite create_sprite(std::initializer_list<const char *>) const;
 
-std::ostream& operator<<(std::ostream& os, const SpriteFrame& s);
+  const std::string &texture_filename() const { return textureName; }
 
-class SpriteSheet : Object
-{
-public:
-  explicit SpriteSheet(const std::string& filename);
-  SpriteSheet() { }
-
-  std::shared_ptr<SpriteFrame>& operator[](const std::string& s) { return frames.at(s); }
-  const std::shared_ptr<SpriteFrame>& operator[](const std::string& s) const { return frames.at(s); }
-
-  const std::string& texture_filename() const { return textureName; }
 private:
   std::string textureName;
-  Size        textureSize;
+  Size textureSize;
   std::unordered_map<std::string, std::shared_ptr<SpriteFrame>> frames;
 };
 }

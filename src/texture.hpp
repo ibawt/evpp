@@ -3,7 +3,7 @@
 #include <string>
 
 namespace ev {
-class Texture : Object
+class Texture
 {
  public:
   explicit Texture(const std::string& filename);

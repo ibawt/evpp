@@ -1,5 +1,0 @@
-[requires]
-glew/1.13.0@coding3d/stable
-
-[generators]
-cmake

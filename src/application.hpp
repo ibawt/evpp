@@ -9,16 +9,16 @@
 
 namespace ev {
 
-class Application : public Object
+class Application
 {
 public:
   Application(int32_t width, int32_t height, std::string name);
   virtual ~Application();
 
 
-  Result show();
-  Result close();
-  Result run();
+  void show();
+  void close();
+  void run();
 
   int32_t get_height() const { return height; }
   int32_t get_width() const { return width; }

@@ -4,7 +4,7 @@
 
 namespace ev {
 
-class Shader : Object {
+class Shader {
  public:
   Shader(const std::string& source, GLenum type);
   virtual ~Shader();
@@ -18,11 +18,12 @@ class Shader : Object {
   GLuint id = 0;
 };
 
-class ShaderProgram : Object
+class ShaderProgram
 {
  public:
   ShaderProgram(const std::string& vertex_source,
                 const std::string& frag_source);
+
   virtual ~ShaderProgram();
 
   void use() const;
@@ -37,7 +38,6 @@ class ShaderProgram : Object
   GLint get_uniform_loc(const std::string& s) const {
     GLint i = glGetUniformLocation(id, s.c_str());
     if( i < 0 ) {
-      printf("i = %d\n", i);
       throw std::runtime_error("invalid uniform location");
     }
     return i;
