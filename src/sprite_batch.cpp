@@ -43,15 +43,9 @@ namespace ev {
 SpriteBatch::SpriteBatch(std::shared_ptr<Texture> tex)
     : program(animationVertexShader, defaultFragmentShader), texture(tex) {}
 
-  SpriteBatch::SpriteBatch(const SpriteBatch& s) : blend_mode(s.blend_mode), program(animationVertexShader, defaultFragmentShader), texture(s.texture)
-  {
-    vertex_buff.set_capacity(s.vertex_buff.size());
-  }
-
 #define OFFSET_OF(x, y) (void *)(offsetof(x, y))
 
-void SpriteBatch::render(Filler &filler, const glm::mat4 &m) {
-  filler.unmap();
+void SpriteBatch::render(const glm::mat4 &m) {
   vertex_buff.bind();
   glEnable(GL_TEXTURE_2D);
   texture->bind();
@@ -86,6 +80,6 @@ void SpriteBatch::render(Filler &filler, const glm::mat4 &m) {
   glEnable(GL_BLEND);
   glBlendFunc(blend_mode.src, blend_mode.dst);
 
-  glDrawArrays(GL_TRIANGLES, 0, filler.num_filled_vertices());
+  glDrawArrays(GL_TRIANGLES, 0, num_verts);
 }
 }

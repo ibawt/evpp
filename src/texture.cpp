@@ -1,58 +1,33 @@
 #include "texture.hpp"
 
-class SDLImage
-{
-public:
-  SDLImage(const std::string& s) {
-    image = IMG_Load(s.c_str());
-    if(!image) {
-      throw std::runtime_error("image loading failure");
-    }
-  }
-  SDLImage(SDL_Surface *s) : image(s) {
-    if(!image) {
-      throw std::runtime_error("image is null");
-    }
-  }
-  ~SDLImage() {
-    if(image) {
-      SDL_FreeSurface(image);
-    }
-  }
-
-  int format() const {
-    return image->format->format;
-  }
-
-  SDLImage to_format(int pixel_format) const {
-    return SDLImage(SDL_ConvertSurfaceFormat(image, pixel_format, 0));
-  }
-
-  SDL_Surface* operator->() {
-    return image;
-  }
-  SDLImage& operator=(SDLImage &&o) {
-    image = o.image;
-    o.image = nullptr;
-    return *this;
-  }
-  SDLImage(SDLImage&&o) : image(o.image) {
-    o.image = nullptr;
-  }
-private:
-  SDLImage() = delete;
-  SDLImage(const SDLImage&) = delete;
-  SDLImage& operator=(const SDLImage&) = delete;
-
-  SDL_Surface *image = nullptr;
-};
-
 namespace ev {
-Texture::Texture(const std::string &filename) : id(0) {
-  SDLImage s(filename);
 
-  if(s.format() != SDL_PIXELFORMAT_ABGR8888) {
-    s = s.to_format(SDL_PIXELFORMAT_ABGR8888);
+  typedef std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> SDLSurface;
+
+  static SDLSurface new_surface(SDL_Surface* p)
+  {
+    return SDLSurface{p, SDL_FreeSurface};
+  }
+
+  static SDLSurface load_surface(const std::string& file)
+  {
+    auto p = IMG_Load(file.c_str());
+    if(!p) {
+      throw std::runtime_error("error loading image");
+    }
+    return new_surface(p);
+  }
+
+  static SDLSurface convert_to(const SDLSurface src, int fmt)
+  {
+    return new_surface(SDL_ConvertSurfaceFormat(src.get(), fmt, 0));
+  }
+
+Texture::Texture(const std::string &filename) : id(0) {
+  auto s = load_surface(filename);
+
+  if(s->format->format != SDL_PIXELFORMAT_ABGR8888) {
+    s = convert_to(std::move(s), SDL_PIXELFORMAT_ABGR8888);
   }
 
   glGenTextures(1, &id);

@@ -2,10 +2,7 @@
 #include <algorithm>
 
 namespace ev {
-  class TileRenderer : public ev::BatchVertexFiller {
-  public:
-    explicit TileRenderer(const Tile& t, const ev::vec2& v) : tile(t), position(v) {}
-    uint32_t fill(ev::BatchVertex *bv) const {
+  static uint32_t fill(ev::BatchVertex *bv, const vec2& position) {
       const float tile_size = 16.0f;
       const float x = 0.05f;
       const float scale = 10.0f;
@@ -57,12 +54,6 @@ namespace ev {
 
       return 6;
     }
-  private:
-    const Tile& tile;
-    const ev::vec2& position;
-  };
-
-
   TileMap::TileMap(int rows, int cols, int tile_size, std::shared_ptr<Texture> tex) :
     rows(rows), columns(cols), tile_size(tile_size), batch(tex)
   {
@@ -81,19 +72,21 @@ namespace ev {
 
   void TileMap::render(const mat4& transform)
   {
-    ev::SpriteBatch::Filler filler(batch);
+    batch.fill([this] (BatchVertex *bv)  {
+        int numRows = std::max(static_cast<int>(view_port.size.height / tile_size), rows);
+        int numCols = std::max(static_cast<int>(view_port.size.width / tile_size), columns);
+        int num_filled = 0;
 
-    int numRows = std::max(static_cast<int>(view_port.size.height / tile_size), rows);
-    int numCols = std::max(static_cast<int>(view_port.size.width / tile_size), columns);
-
-    for (int row = 0 ; row < numRows ; ++row ) {
-      for(int col = 0 ; col < numCols ; ++col) {
-        const auto& tile = tiles[row * columns + col];
-        const TileRenderer tr(tile, vec2(col * tile_size, row * tile_size));
-        filler.render(tr);
-      }
-    }
-    batch.render(filler, transform);
+        for (int row = 0 ; row < numRows ; ++row ) {
+          for(int col = 0 ; col < numCols ; ++col) {
+            const auto& tile = tiles[row * columns + col];
+            const vec2 pos(col * tile_size, row * tile_size);
+            num_filled += fill(bv + num_filled, pos);
+          }
+        }
+        return num_filled;
+      });
+    batch.render(transform);
   }
 
   TileMap::~TileMap() {

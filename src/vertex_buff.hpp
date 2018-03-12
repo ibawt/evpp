@@ -56,9 +56,16 @@ class VertexBuff
   }
 
   size_t size() const { return buff.size(); }
+
+  // Use this over map and unmap() for auto unmapping
+  std::unique_ptr<T[], std::function<void(T*)>> mapped_buffer() {
+    return std::unique_ptr<T[], std::function<void(T*)>>{ map(), [this](T*) { this->unmap(); }};
+  }
  private:
   VertexBuff(const VertexBuff&) = delete;
   VertexBuff& operator=(const VertexBuff&) = delete;
+  VertexBuff(const VertexBuff&&) = delete;
+  VertexBuff& operator=(const VertexBuff&&) = delete;
 
   GLuint id;
   std::vector<T> buff;

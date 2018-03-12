@@ -174,14 +174,16 @@ public:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     map->render(transform);
-    ev::SpriteBatch::Filler filler(batch);
-    filler.render(background);
-    filler.render(bird);
+    batch.fill( [this](BatchVertex* bv) {
+        int n = background.fill(bv);
+        n += bird.fill(bv + n);
 
-    for (const auto &pipe : pipes) {
-      filler.render(pipe);
-    }
-    batch.render(filler, transform);
+        // for (const auto &pipe : pipes) {
+        //   n = pipe.fill(bv + n);
+        // }
+        return n;
+      });
+    batch.render(transform);
   }
 
   virtual void update(const float dt) override {
