@@ -5,7 +5,7 @@
 namespace ev {
 class SpriteFrame{
  public:
-  explicit SpriteFrame(const json &, const Size &);
+  SpriteFrame(const json &, const Size &);
 
   static const auto NUM_VERTS = 6;
   typedef std::array<BatchVertex, NUM_VERTS> BatchVertices;

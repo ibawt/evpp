@@ -12,12 +12,12 @@ void Animation::update(float dt) {
       switch (mode) {
       case Mode::LOOP:
         index++;
-        if (index >= frames.size())
+        if (index >= static_cast<int>(frames.size()))
           index = 0;
         break;
       case Mode::ONE_SHOT:
         index++;
-        if (index >= frames.size())
+        if (index >= static_cast<int>(frames.size()))
           index = frames.size() - 1;
         break;
       case Mode::REVERSE:

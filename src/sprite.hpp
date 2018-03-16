@@ -1,7 +1,6 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include "Box2D/Box2D.h"
 #include "ev.hpp"
 #include "sprite_frame.hpp"
 #include <cassert>
@@ -55,19 +54,19 @@ public:
   void  set_delay(float f) { delay = f; }
   float get_delay() const { return delay; }
 
-  uint32_t get_index() const { return index; }
+  int get_index() const { return index; }
   size_t get_num_frames() const { return frames.size(); }
 private:
   float delay = 0.3f;
   float time = 0.0f;
-  Mode mode = Mode::LOOP;
-  uint32_t index = 0;
+  Mode  mode = Mode::LOOP;
+  int   index = 0;
   std::vector<std::shared_ptr<SpriteFrame>> frames;
 };
 
-  class Sprite : public BatchVertexFiller {
+  class Sprite {
   public:
-  uint32_t fill(BatchVertex *array) const {
+  int fill(BatchVertex *array) const {
     if (!visible) {
       return 0;
     }

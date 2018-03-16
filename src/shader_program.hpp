@@ -7,6 +7,15 @@ namespace ev {
 class Shader {
  public:
   Shader(const std::string& source, GLenum type);
+  Shader(Shader&& other) : id(other.id) {
+    other.id = 0;
+  }
+  Shader& operator=(Shader&& other) {
+    id = other.id;
+    other.id = 0;
+    return *this;
+  }
+
   virtual ~Shader();
 
   GLuint get_id() { return id; }
@@ -23,6 +32,17 @@ class ShaderProgram
  public:
   ShaderProgram(const std::string& vertex_source,
                 const std::string& frag_source);
+  ShaderProgram(ShaderProgram&& other) : id(other.id), vertex(std::move(other.vertex)),
+                                         fragment(std::move(other.fragment)) {
+    other.id = 0;
+  }
+  ShaderProgram& operator=(ShaderProgram&& other) {
+    vertex = std::move(other.vertex);
+    fragment = std::move(other.fragment);
+    id = other.id;
+    other.id = 0;
+    return *this;
+  }
 
   virtual ~ShaderProgram();
 
@@ -30,16 +50,20 @@ class ShaderProgram
 
   GLint get_attrib_loc(const std::string& s) const {
     GLint i =  glGetAttribLocation(id, s.c_str());
+    #ifndef NDEBUG
     if( i < 0 ) {
       throw std::runtime_error("inavlid attribute location");
     }
+    #endif
     return i;
   }
   GLint get_uniform_loc(const std::string& s) const {
     GLint i = glGetUniformLocation(id, s.c_str());
+    #ifndef NDEBUG
     if( i < 0 ) {
       throw std::runtime_error("invalid uniform location");
     }
+    #endif
     return i;
   }
 

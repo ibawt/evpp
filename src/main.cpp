@@ -140,7 +140,7 @@ public:
     pipes.push_back(sheet.create_sprite({"green_pipe_down"}));
     setupPhysics();
 
-    auto map_texture = std::make_shared<ev::Texture>(filepath("Tile.png"));
+    auto map_texture = std::make_shared<ev::Texture>(filepath("textures/Objects/Wall.png"));
     this->map = std::make_unique<TileMap>(128,128,32, map_texture);
 
     map->set_viewport(Rectangle(0, 0, 800, 600));
@@ -178,9 +178,9 @@ public:
         int n = background.fill(bv);
         n += bird.fill(bv + n);
 
-        // for (const auto &pipe : pipes) {
-        //   n = pipe.fill(bv + n);
-        // }
+        for (const auto &pipe : pipes) {
+          n += pipe.fill(bv + n);
+        }
         return n;
       });
     batch.render(transform);

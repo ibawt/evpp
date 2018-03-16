@@ -9,7 +9,7 @@
 namespace ev {
 class SpriteSheet {
 public:
-  explicit SpriteSheet(const std::string &filename);
+  SpriteSheet(const std::string &filename);
 
   const std::shared_ptr<SpriteFrame> &operator[](const std::string &s) const {
     return frames.at(s);

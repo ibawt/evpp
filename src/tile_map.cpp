@@ -2,10 +2,15 @@
 #include <algorithm>
 
 namespace ev {
-  static uint32_t fill(ev::BatchVertex *bv, const vec2& position) {
+  static int fill(ev::BatchVertex *bv, const vec2& position) {
       const float tile_size = 16.0f;
-      const float x = 0.05f;
-      const float scale = 10.0f;
+      const float scale = 2.0f;
+
+      const float tex_y_scale = 816.0f;
+      const float tex_x_scale = 320.0f;
+      const float tex_row = 4 * tile_size;
+      const float tex_col = 1 * tile_size;
+
 
       // Upper left
       bv[0].position.x = -tile_size/2.0f;
@@ -13,10 +18,9 @@ namespace ev {
       bv[0].opacity = 1.0f;
       bv[0].scale = scale;
       bv[0].translation = position;
-      bv[0].tex.x = 0.0f;
-      bv[0].tex.y = 0.0f;
+      bv[0].tex.x = tex_col / tex_x_scale;
+      bv[0].tex.y = tex_row / tex_y_scale;
       bv[0].rotation = 0.0f;
-
 
       // Upper right
       bv[1].position.x = tile_size/2.0f;
@@ -24,8 +28,8 @@ namespace ev {
       bv[1].opacity = 1.0f;
       bv[1].scale = scale;
       bv[1].translation = position;
-      bv[1].tex.x = x;
-      bv[1].tex.y = x;
+      bv[1].tex.x = (tex_col + tile_size) / tex_x_scale;
+      bv[1].tex.y = tex_row / tex_y_scale;
       bv[1].rotation = 0.0f;
 
       // Lower Right
@@ -34,8 +38,8 @@ namespace ev {
       bv[2].opacity = 1.0f;
       bv[2].scale = scale;
       bv[2].translation = position;
-      bv[2].tex.x = x;
-      bv[2].tex.y = 0;
+      bv[2].tex.x = (tex_col + tile_size) / tex_x_scale;
+      bv[2].tex.y = (tex_row + tile_size) / tex_y_scale;
       bv[2].rotation = 0.0f;
 
       bv[3] = bv[2];
@@ -46,8 +50,8 @@ namespace ev {
       bv[4].opacity = 1.0f;
       bv[4].scale = scale;
       bv[4].translation = position;
-      bv[4].tex.x = 0;
-      bv[4].tex.y = x;
+      bv[4].tex.x = tex_col / tex_x_scale;
+      bv[4].tex.y = (tex_row + tile_size) / tex_y_scale;
       bv[4].rotation = 0.0f;
 
       bv[5] = bv[0];
@@ -79,7 +83,7 @@ namespace ev {
 
         for (int row = 0 ; row < numRows ; ++row ) {
           for(int col = 0 ; col < numCols ; ++col) {
-            const auto& tile = tiles[row * columns + col];
+            // const auto& tile = tiles[row * columns + col];
             const vec2 pos(col * tile_size, row * tile_size);
             num_filled += fill(bv + num_filled, pos);
           }

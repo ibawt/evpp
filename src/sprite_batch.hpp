@@ -7,7 +7,6 @@
 #include "sprite_sheet.hpp"
 #include "texture.hpp"
 #include "vertex_buff.hpp"
-#include <cassert>
 #include <memory>
 #include <vector>
 
@@ -15,8 +14,6 @@ namespace ev {
 
 class SpriteBatch {
 public:
-  SpriteBatch(const SpriteBatch& s) = delete;
-  SpriteBatch& operator=(const SpriteBatch&) = delete;
   SpriteBatch(std::shared_ptr<Texture> texture);
 
   void set_capacity(size_t s) {

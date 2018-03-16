@@ -12,7 +12,7 @@ namespace ev {
 class Application
 {
 public:
-  Application(int32_t width, int32_t height, std::string name);
+  Application(int width, int height, std::string name);
   virtual ~Application();
 
 
@@ -20,8 +20,8 @@ public:
   void close();
   void run();
 
-  int32_t get_height() const { return height; }
-  int32_t get_width() const { return width; }
+  int get_height() const { return height; }
+  int get_width() const { return width; }
 
   virtual void render() = 0;
   virtual void update(const float dt) = 0;
@@ -33,10 +33,10 @@ private:
   vk::Instance vkInstance = VK_NULL_HANDLE;
   vk::SurfaceKHR vkSurface = VK_NULL_HANDLE;
   #endif
-  int32_t        width = 0;
-  int32_t        height = 0;
+  int            width = 0;
+  int            height = 0;
   bool           shouldClose = false;
-  std::string    name;
+  std::string    name = "ev application";
   SDL_GLContext  context = nullptr;
   SDL_Window    *window = nullptr;
 };

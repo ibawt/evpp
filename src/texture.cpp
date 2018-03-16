@@ -2,28 +2,28 @@
 
 namespace ev {
 
-  typedef std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> SDLSurface;
+typedef std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> SDLSurface;
 
-  static SDLSurface new_surface(SDL_Surface* p)
-  {
-    return SDLSurface{p, SDL_FreeSurface};
+static SDLSurface new_surface(SDL_Surface* p)
+{
+  return SDLSurface{p, SDL_FreeSurface};
+}
+
+static SDLSurface load_surface(const std::string& file)
+{
+  auto p = IMG_Load(file.c_str());
+  if(!p) {
+    throw std::runtime_error("error loading image");
   }
+  return new_surface(p);
+}
 
-  static SDLSurface load_surface(const std::string& file)
-  {
-    auto p = IMG_Load(file.c_str());
-    if(!p) {
-      throw std::runtime_error("error loading image");
-    }
-    return new_surface(p);
-  }
+static SDLSurface convert_to(const SDLSurface src, int fmt)
+{
+  return new_surface(SDL_ConvertSurfaceFormat(src.get(), fmt, 0));
+}
 
-  static SDLSurface convert_to(const SDLSurface src, int fmt)
-  {
-    return new_surface(SDL_ConvertSurfaceFormat(src.get(), fmt, 0));
-  }
-
-Texture::Texture(const std::string &filename) : id(0) {
+Texture::Texture(const std::string &filename) {
   auto s = load_surface(filename);
 
   if(s->format->format != SDL_PIXELFORMAT_ABGR8888) {

@@ -6,7 +6,7 @@ namespace ev {
 Shader::Shader(const std::string& source, GLenum type)
 {
   id = glCreateShader(type);
-  const char *s = source.c_str();
+  auto s = source.c_str();
   glShaderSource(id, 1, &s, 0);
   glCompileShader(id);
 
@@ -23,7 +23,7 @@ Shader::Shader(const std::string& source, GLenum type)
     glGetShaderInfoLog(id, loglength, &loglength, log.data());
     log.resize(loglength);
 
-    throw std::runtime_error(std::string(log.begin(), log.end()));
+    throw EVException(std::string(log.begin(), log.end()));
   }
 }
 
@@ -57,10 +57,7 @@ ShaderProgram::ShaderProgram(const std::string& vertex_source,
     glGetProgramInfoLog(id, loglength, &loglength, log.data());
     log.resize(loglength);
 
-    glDeleteShader(id);
-    id = 0;
-
-    throw std::runtime_error(std::string(log.begin(), log.end()));
+    throw EVException(std::string(log.begin(), log.end()));
   }
 }
 

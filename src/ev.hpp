@@ -34,35 +34,26 @@ static inline float degree2radian(float degrees) {
 }
 
 struct BlendMode {
-  GLenum src;
-  GLenum dst;
+  GLenum src = 0;
+  GLenum dst = 0;
 
   BlendMode(GLenum s, GLenum d) : src(s), dst(d) {}
 };
 
 struct BatchVertex {
-  vec2 position;
-  vec2 tex;
-  float rotation;
-  float scale;
-  vec2 translation;
-  float opacity;
-
-  BatchVertex()
-      : position(0.0f, 0.0f), tex(0.0f, 0.0f), rotation(0.0f), scale(0.0f),
-        translation(0.0f, 0.0f), opacity(0.0f) {}
-};
-
-class BatchVertexFiller {
-public:
-  virtual uint32_t fill(BatchVertex*) const = 0;
+  vec2 position = { 0, 0};
+  vec2 tex = { 0, 0};
+  float rotation = 0;
+  float scale = 1.0f;
+  vec2 translation = { 0, 0};
+  float opacity = 1.0f;
 };
 
 struct Size {
-  float width;
-  float height;
+  float width = 0;
+  float height = 0;
   Size(float w, float h) : width(w), height(h) {}
-  Size() : width(0.0f), height(0.0f) {}
+  Size() {}
 };
 
 inline std::ostream &operator<<(std::ostream &os, const Size &size) {
@@ -71,7 +62,7 @@ inline std::ostream &operator<<(std::ostream &os, const Size &size) {
 }
 
 struct Rectangle {
-  vec2 origin;
+  vec2 origin = {0, 0};
   Size size;
 
   Rectangle(float x, float y, float w, float h) : origin(x, y), size(w, h) {}
@@ -95,9 +86,10 @@ inline std::ostream &operator<<(std::ostream &os, const Rectangle &r) {
 }
 
 inline vec2 to_vec2(const Size &size) { return vec2{size.width, size.height}; }
-}
 
 class EVException : public std::runtime_error {
 public:
   EVException(const char *s) : std::runtime_error(s) {}
+  EVException(const std::string& s) : std::runtime_error(s) {}
 };
+}

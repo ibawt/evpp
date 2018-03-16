@@ -99,7 +99,8 @@ void Application::show()
 }
 
 void Application::run() {
-  auto t1 = std::chrono::high_resolution_clock::now();
+  using namespace std::chrono;
+  auto t1 = high_resolution_clock::now();
   while (!shouldClose) {
     SDL_Event e;
 
@@ -115,10 +116,9 @@ void Application::run() {
       }
     }
 
-    auto t2 = std::chrono::high_resolution_clock::now();
 
-    auto dt =
-        std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+    auto t2 = high_resolution_clock::now();
+    auto dt = duration_cast<milliseconds>(t2 - t1).count();
 
     t1 = t2;
 

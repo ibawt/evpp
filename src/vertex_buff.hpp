@@ -11,25 +11,38 @@ class VertexBuff
 {
  public:
   static const auto DEFAULT_COUNT = 64;
-  explicit VertexBuff(size_t n) : id(0), buff(n) {
+  VertexBuff(size_t n) : id(0), buff(n) {
     set_capacity(n);
   }
   VertexBuff() : VertexBuff(DEFAULT_COUNT) {}
-  virtual ~VertexBuff() {
+  ~VertexBuff() {
     dispose();
+  }
+
+  VertexBuff(const VertexBuff&& other)
+    : buff(std::move(other.buff)), id(other.id)
+  {
+    other.id = 0;
+  }
+
+  VertexBuff& operator=(const VertexBuff&& other) {
+    buff = std::move(other.buff);
+    id = other.id;
+    other.id = 0;
+    return *this;
   }
 
   void set_capacity(size_t newsize)
   {
     if(!newsize) {
-      throw std::runtime_error("invalid size");
+      throw EVException("invalid size");
     }
 
     dispose();
 
     glGenBuffers(1, &id);
     if(!id) {
-      throw std::runtime_error("glGenBuffers failed");
+      throw EVException("glGenBuffers failed");
     }
 
     bind();
@@ -58,16 +71,15 @@ class VertexBuff
   size_t size() const { return buff.size(); }
 
   // Use this over map and unmap() for auto unmapping
-  std::unique_ptr<T[], std::function<void(T*)>> mapped_buffer() {
-    return std::unique_ptr<T[], std::function<void(T*)>>{ map(), [this](T*) { this->unmap(); }};
+  typedef std::unique_ptr<T[], std::function<void(T*)>> MappedBuffer;
+  MappedBuffer mapped_buffer() {
+    return MappedBuffer{ map(), [](T*) { glUnmapBuffer(target); }};
   }
  private:
   VertexBuff(const VertexBuff&) = delete;
   VertexBuff& operator=(const VertexBuff&) = delete;
-  VertexBuff(const VertexBuff&&) = delete;
-  VertexBuff& operator=(const VertexBuff&&) = delete;
 
-  GLuint id;
+  GLuint id = 0;
   std::vector<T> buff;
 
   void dispose()

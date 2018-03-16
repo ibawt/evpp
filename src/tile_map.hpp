@@ -45,9 +45,9 @@ namespace ev
     void render(const glm::mat4&);
   private:
     Rectangle view_port;
-    int rows;
-    int columns;
-    int tile_size;
+    int rows = 0;
+    int columns = 0;
+    int tile_size = 0;
 
     std::vector<Tile> tiles;
     SpriteBatch batch;
