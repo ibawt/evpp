@@ -2,15 +2,22 @@
 #include <algorithm>
 
 namespace ev {
-  static int fill(ev::BatchVertex *bv, const vec2& position) {
-      const float tile_size = 16.0f;
+  int TileMap::fill(ev::BatchVertex *bv, const Tile& t, const vec2& position) {
       const float scale = 2.0f;
 
-      const float tex_y_scale = 816.0f;
-      const float tex_x_scale = 320.0f;
-      const float tex_row = 4 * tile_size;
-      const float tex_col = 1 * tile_size;
+      const float tex_y_scale = texture_size.height;
+      const float tex_x_scale = texture_size.width;
 
+      auto tile_stride = texture_size.width / tile_size;
+
+      auto ts_row = t.tile_set / 3;
+      auto ts_col = t.tile_set % 3;
+
+      int row = t.type / 6 + 3;
+      int col = t.type % 6;
+
+      const float tex_row = row * tile_size;
+      const float tex_col = col * tile_size;
 
       // Upper left
       bv[0].position.x = -tile_size/2.0f;
@@ -59,7 +66,7 @@ namespace ev {
       return 6;
     }
   TileMap::TileMap(int rows, int cols, int tile_size, std::shared_ptr<Texture> tex) :
-    rows(rows), columns(cols), tile_size(tile_size), batch(tex)
+    rows(rows), columns(cols), tile_size(tile_size),texture_size(tex->get_size()), batch(tex)
   {
     tiles.resize(rows*cols);
     batch.set_capacity(rows*cols*6);
@@ -85,7 +92,7 @@ namespace ev {
           for(int col = 0 ; col < numCols ; ++col) {
             // const auto& tile = tiles[row * columns + col];
             const vec2 pos(col * tile_size, row * tile_size);
-            num_filled += fill(bv + num_filled, pos);
+            num_filled += fill(bv + num_filled, tiles[row*columns + col], pos);
           }
         }
         return num_filled;

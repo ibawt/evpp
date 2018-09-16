@@ -27,7 +27,7 @@ namespace ev
 
   struct Tile {
     int tile_set = 0;
-    TileType type = TileType::OUTER_UPPER_LEFT;
+    TileType type = TileType::OUTER_LEFT;
   };
 
   class TileMap {
@@ -44,11 +44,14 @@ namespace ev
 
     void render(const glm::mat4&);
   private:
+    int fill(BatchVertex *bv, const Tile&, const vec2&);
+
     Rectangle view_port;
     int rows = 0;
     int columns = 0;
     int tile_size = 0;
 
+    Size texture_size;
     std::vector<Tile> tiles;
     SpriteBatch batch;
   };
